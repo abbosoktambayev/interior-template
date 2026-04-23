@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMIÈRE DESIGN — Архитектура пространства</title>
+  <meta name="description" content="Студия премиального дизайна интерьеров. Архитектура, пространство, жизнь.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+            sans: ['Montserrat', 'Helvetica Neue', 'sans-serif']
+          },
+          colors: {
+            pearl: '#FAFAFA',
+            graphite: '#1A1A1A',
+            bronze: '#A39171',
+            line: '#E5E5E5',
+            muted: '#8A8A8A'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: #FAFAFA; color: #1A1A1A; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    ::selection { background: #A39171; color: #fff; }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(.25,.46,.45,.94), transform 1s cubic-bezier(.25,.46,.45,.94); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .15s; }
+    .reveal-delay-2 { transition-delay: .3s; }
+    .reveal-delay-3 { transition-delay: .45s; }
+
+    /* Horizontal rule animation */
+    .line-reveal { width: 0; transition: width 1.2s cubic-bezier(.25,.46,.45,.94); }
+    .line-reveal.visible { width: 100%; }
+
+    /* Portfolio hover */
+    .port-img { transition: transform 1.2s cubic-bezier(.25,.46,.45,.94); }
+    .port-card:hover .port-img { transform: scale(1.06); }
+
+    /* Form fields */
+    .form-field { background: transparent; border: none; border-bottom: 1px solid #E5E5E5; border-radius: 0; outline: none; transition: border-color .4s ease; }
+    .form-field:focus { border-color: #A39171; }
+    .form-field::placeholder { color: #BEBEBE; }
+
+    /* Button line underline */
+    .link-underline { position: relative; }
+    .link-underline::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .5s cubic-bezier(.25,.46,.45,.94); }
+    .link-underline:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    /* Custom cursor hint */
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; left: 0; bottom: -2px; height: 1px; width: 0; background: #A39171; transition: width .4s ease; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Toast */
+    #toast { transition: opacity .5s ease, transform .5s ease; }
+
+    /* Quiz steps */
+    .quiz-step { opacity: 0; transform: translateY(24px); transition: opacity .5s ease, transform .5s ease; position: absolute; inset: 0; pointer-events: none; }
+    .quiz-step.active { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; }
+
+    /* Range slider */
+    input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 1px; background: #E5E5E5; outline: none; cursor: pointer; }
+    input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #A39171; border: none; cursor: pointer; transition: transform .2s ease; }
+    input[type='range']::-webkit-slider-thumb:hover { transform: scale(1.3); }
+    input[type='range']::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #A39171; border: none; cursor: pointer; }
+
+    /* Spinner */
+    .spinner { width: 28px; height: 28px; border: 1.5px solid #E5E5E5; border-top-color: #A39171; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Option card */
+    .opt-card { border: 1px solid #E5E5E5; transition: border-color .3s ease, color .3s ease; cursor: pointer; }
+    .opt-card:hover, .opt-card.selected { border-color: #A39171; color: #A39171; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #FAFAFA; }
+    ::-webkit-scrollbar-thumb { background: #D0D0D0; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="fixed top-0 left-0 w-full z-50 transition-all duration-500" id="header">
+  <div class="max-w-[1440px] mx-auto px-8 md:px-16 py-8 flex items-center justify-between transition-all duration-500" id="headerInner">
+    <a href="#" class="font-serif text-2xl md:text-3xl font-light text-graphite tracking-wide">Lumière</a>
+    <nav class="hidden md:flex items-center gap-10">
+      <a href="#portfolio" class="nav-link font-sans text-[11px] uppercase tracking-[0.2em] text-muted hover:text-graphite transition-colors duration-300">Портфолио</a>
+      <a href="#services" class="nav-link font-sans text-[11px] uppercase tracking-[0.2em] text-muted hover:text-graphite transition-colors duration-300">Услуги</a>
+      <a href="#contact" class="nav-link font-sans text-[11px] uppercase tracking-[0.2em] text-muted hover:text-graphite transition-colors duration-300">Контакты</a>
+    </nav>
+    <a href="#contact" class="hidden md:inline-block font-sans text-[11px] uppercase tracking-[0.2em] text-muted hover:text-graphite link-underline transition-colors duration-300">Консультация</a>
+    <button id="burger" class="md:hidden text-graphite" aria-label="Меню">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 8h16M4 16h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="fixed inset-0 z-40 bg-pearl hidden flex-col items-center justify-center">
+  <button id="closeMenu" class="absolute top-8 right-8 text-graphite" aria-label="Закрыть">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M6 18L18 6"/></svg>
+  </button>
+  <nav class="flex flex-col items-center gap-8">
+    <a href="#portfolio" class="mob-link font-serif text-4xl font-light text-graphite">Портфолио</a>
+    <a href="#services" class="mob-link font-serif text-4xl font-light text-graphite">Услуги</a>
+    <a href="#contact" class="mob-link font-serif text-4xl font-light text-graphite">Контакты</a>
+  </nav>
+</div>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="min-h-screen flex items-center px-8 md:px-16 max-w-[1440px] mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8 items-center w-full pt-32 pb-16 md:pt-0 md:pb-0">
+    <!-- Left: Typography -->
+    <div class="order-2 md:order-1">
+      <p class="font-sans text-[11px] uppercase tracking-[0.25em] text-bronze mb-8 reveal">Студия дизайна интерьеров</p>
+      <h1 class="font-serif font-light text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight text-graphite reveal reveal-delay-1">
+        Архитектура.<br>Пространство.<br>Жизнь.
+      </h1>
+      <p class="font-sans text-sm text-muted leading-relaxed mt-10 max-w-md reveal reveal-delay-2">
+        Мы проектируем пространства, которые отражают характер владельца. Каждая линия продумана, каждая текстура выверена.
+      </p>
+      <a href="#contact" class="inline-block mt-10 font-sans text-[11px] uppercase tracking-[0.2em] text-graphite link-underline reveal reveal-delay-3">Начать проект →</a>
+    </div>
+    <!-- Right: Image -->
+    <div class="order-1 md:order-2 overflow-hidden reveal">
+      <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80" alt="Современный интерьер" class="w-full h-[50vh] md:h-[80vh] object-cover">
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ QUOTE ═══════════════════ -->
+<section class="py-32 md:py-44 px-8 md:px-16">
+  <div class="max-w-[1000px] mx-auto text-center reveal">
+    <blockquote class="font-serif italic font-light text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-snug text-graphite">
+      «Истинная роскошь не&nbsp;бросается в&nbsp;глаза. Она ощущается в&nbsp;каждой детали.»
+    </blockquote>
+    <div class="w-12 h-px bg-bronze mx-auto mt-12"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PORTFOLIO ═══════════════════ -->
+<section id="portfolio" class="py-24 md:py-32 px-8 md:px-16 max-w-[1440px] mx-auto">
+  <div class="flex items-baseline justify-between mb-16 reveal">
+    <h2 class="font-serif font-light text-4xl md:text-6xl text-graphite">Избранные проекты</h2>
+    <span class="hidden md:block font-sans text-[11px] uppercase tracking-[0.2em] text-muted">2021 — 2026</span>
+  </div>
+
+  <!-- Asymmetric Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
+    <!-- Large left -->
+    <div class="md:col-span-7 port-card overflow-hidden reveal">
+      <div class="overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80" alt="Проект 1" class="port-img w-full h-[55vh] md:h-[70vh] object-cover">
+      </div>
+      <div class="mt-4 flex items-baseline justify-between">
+        <p class="font-sans text-xs uppercase tracking-[0.15em] text-muted">Резиденция «Парк Авеню»</p>
+        <p class="font-sans text-xs tracking-[0.1em] text-muted/60">180 м²</p>
+      </div>
+    </div>
+    <!-- Tall right -->
+    <div class="md:col-span-5 port-card overflow-hidden reveal reveal-delay-1">
+      <div class="overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80" alt="Проект 2" class="port-img w-full h-[55vh] md:h-[70vh] object-cover">
+      </div>
+      <div class="mt-4 flex items-baseline justify-between">
+        <p class="font-sans text-xs uppercase tracking-[0.15em] text-muted">Пентхаус на Набережной</p>
+        <p class="font-sans text-xs tracking-[0.1em] text-muted/60">200 м²</p>
+      </div>
+    </div>
+    <!-- Small left -->
+    <div class="md:col-span-5 port-card overflow-hidden reveal">
+      <div class="overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" alt="Проект 3" class="port-img w-full h-[40vh] md:h-[50vh] object-cover">
+      </div>
+      <div class="mt-4 flex items-baseline justify-between">
+        <p class="font-sans text-xs uppercase tracking-[0.15em] text-muted">Квартира в старом центре</p>
+        <p class="font-sans text-xs tracking-[0.1em] text-muted/60">95 м²</p>
+      </div>
+    </div>
+    <!-- Wide right -->
+    <div class="md:col-span-7 port-card overflow-hidden reveal reveal-delay-1">
+      <div class="overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="Проект 4" class="port-img w-full h-[40vh] md:h-[50vh] object-cover">
+      </div>
+      <div class="mt-4 flex items-baseline justify-between">
+        <p class="font-sans text-xs uppercase tracking-[0.15em] text-muted">Загородный дом</p>
+        <p class="font-sans text-xs tracking-[0.1em] text-muted/60">350 м²</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SERVICES ═══════════════════ -->
+<section id="services" class="py-24 md:py-32 px-8 md:px-16 max-w-[1440px] mx-auto">
+  <p class="font-sans text-[11px] uppercase tracking-[0.25em] text-bronze mb-4 reveal">Что мы делаем</p>
+  <h2 class="font-serif font-light text-4xl md:text-6xl text-graphite mb-16 md:mb-20 reveal">Услуги</h2>
+
+  <!-- Service 01 -->
+  <div class="border-b border-line py-8 md:py-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-0 reveal group cursor-default">
+    <span class="font-sans text-xs tracking-[0.15em] text-muted w-20 shrink-0">01</span>
+    <h3 class="font-serif font-light text-3xl md:text-5xl text-graphite flex-1 group-hover:text-bronze transition-colors duration-500">Дизайн-проект</h3>
+    <span class="font-sans text-sm text-muted md:text-right">от 12 000 ₸ / м²</span>
+  </div>
+  <!-- Service 02 -->
+  <div class="border-b border-line py-8 md:py-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-0 reveal reveal-delay-1 group cursor-default">
+    <span class="font-sans text-xs tracking-[0.15em] text-muted w-20 shrink-0">02</span>
+    <h3 class="font-serif font-light text-3xl md:text-5xl text-graphite flex-1 group-hover:text-bronze transition-colors duration-500">Ремонт под ключ</h3>
+    <span class="font-sans text-sm text-muted md:text-right">от 90 000 ₸ / м²</span>
+  </div>
+  <!-- Service 03 -->
+  <div class="border-b border-line py-8 md:py-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-0 reveal reveal-delay-2 group cursor-default">
+    <span class="font-sans text-xs tracking-[0.15em] text-muted w-20 shrink-0">03</span>
+    <h3 class="font-serif font-light text-3xl md:text-5xl text-graphite flex-1 group-hover:text-bronze transition-colors duration-500">Авторский надзор</h3>
+    <span class="font-sans text-sm text-muted md:text-right">Индивидуально</span>
+  </div>
+</section>
+
+<!-- ═══════════════════ STATS ═══════════════════ -->
+<section class="py-24 md:py-32 px-8 md:px-16 border-t border-line">
+  <div class="max-w-[1440px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-16 md:gap-8 text-center">
+    <div class="reveal">
+      <p class="font-serif font-light text-6xl md:text-7xl text-graphite counter" data-target="50" data-suffix="+">0</p>
+      <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-muted mt-4">Реализованных проектов</p>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <p class="font-serif font-light text-6xl md:text-7xl text-graphite">100%</p>
+      <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-muted mt-4">Соблюдение сроков</p>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <p class="font-serif font-light text-6xl md:text-7xl text-graphite counter" data-target="5" data-suffix=" лет">0</p>
+      <p class="font-sans text-[11px] uppercase tracking-[0.2em] text-muted mt-4">На рынке</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ QUIZ CALCULATOR ═══════════════════ -->
+<section id="contact" class="py-24 md:py-32 px-8 md:px-16 border-t border-line">
+  <div class="max-w-[800px] mx-auto reveal">
+
+    <!-- Progress indicator -->
+    <div class="flex items-center justify-between mb-12">
+      <p class="font-sans text-[11px] uppercase tracking-[0.25em] text-bronze">Калькулятор</p>
+      <p class="font-sans text-[11px] tracking-[0.15em] text-muted" id="quizProgress">01 / 04</p>
+    </div>
+
+    <!-- Quiz container -->
+    <div class="relative min-h-[340px]" id="quizContainer">
+
+      <!-- STEP 1: Object type -->
+      <div class="quiz-step active" data-step="1">
+        <h2 class="font-serif font-light text-4xl md:text-6xl text-graphite mb-12">Какой объект будем проектировать?</h2>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button class="opt-card flex-1 py-8 px-6 text-center font-sans text-xs uppercase tracking-[0.2em] text-graphite" data-type="Квартира" onclick="quizSelectType(this)">Квартира</button>
+          <button class="opt-card flex-1 py-8 px-6 text-center font-sans text-xs uppercase tracking-[0.2em] text-graphite" data-type="Загородный дом" onclick="quizSelectType(this)">Загородный дом</button>
+          <button class="opt-card flex-1 py-8 px-6 text-center font-sans text-xs uppercase tracking-[0.2em] text-graphite" data-type="Коммерция" onclick="quizSelectType(this)">Коммерция</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Area slider -->
+      <div class="quiz-step" data-step="2">
+        <h2 class="font-serif font-light text-4xl md:text-6xl text-graphite mb-12">Укажите примерную площадь</h2>
+        <p class="font-serif font-light text-6xl md:text-8xl text-graphite mb-10" id="areaDisplay">100 <span class="text-3xl md:text-4xl text-muted">м²</span></p>
+        <input type="range" min="30" max="500" value="100" id="areaSlider" class="w-full mb-12">
+        <button class="font-sans text-[11px] uppercase tracking-[0.2em] text-graphite border-b border-graphite pb-1 hover:text-bronze hover:border-bronze transition-colors duration-300 cursor-pointer" onclick="quizGoTo(3)">Далее →</button>
+      </div>
+
+      <!-- STEP 3: Style -->
+      <div class="quiz-step" data-step="3">
+        <h2 class="font-serif font-light text-4xl md:text-6xl text-graphite mb-12">Какой стиль вам ближе?</h2>
+        <div class="flex flex-wrap gap-4">
+          <button class="opt-card py-5 px-8 font-sans text-xs uppercase tracking-[0.2em] text-graphite" onclick="quizSelectStyle(this, 'Минимализм')">Минимализм</button>
+          <button class="opt-card py-5 px-8 font-sans text-xs uppercase tracking-[0.2em] text-graphite" onclick="quizSelectStyle(this, 'Неоклассика')">Неоклассика</button>
+          <button class="opt-card py-5 px-8 font-sans text-xs uppercase tracking-[0.2em] text-graphite" onclick="quizSelectStyle(this, 'Джапанди')">Джапанди</button>
+          <button class="opt-card py-5 px-8 font-sans text-xs uppercase tracking-[0.2em] text-graphite" onclick="quizSelectStyle(this, 'Свой вариант')">Свой вариант</button>
+        </div>
+      </div>
+
+      <!-- STEP 3.5: Loading screen -->
+      <div class="quiz-step" data-step="loading">
+        <div class="flex flex-col items-center justify-center py-20">
+          <div class="spinner mb-8"></div>
+          <p class="font-sans text-xs uppercase tracking-[0.2em] text-muted">Анализируем параметры и формируем смету...</p>
+        </div>
+      </div>
+
+      <!-- STEP 4: Contact capture -->
+      <div class="quiz-step" data-step="4">
+        <h2 class="font-serif font-light text-4xl md:text-6xl text-graphite mb-4">Расчёт готов</h2>
+        <p class="font-sans text-sm text-muted mb-12 max-w-lg" id="step4Subtitle">Оставьте номер WhatsApp. Наш архитектор отправит вам предварительную стоимость и PDF-презентацию в течение 15 минут.</p>
+        <form id="quizForm" class="space-y-8">
+          <div>
+            <label class="font-sans text-[10px] uppercase tracking-[0.2em] text-muted block mb-3">Телефон / WhatsApp</label>
+            <input type="tel" id="quizPhone" required placeholder="+7 700 000 00 00" class="form-field w-full py-3 font-sans text-sm text-graphite">
+          </div>
+          <button type="submit" id="quizSubmitBtn" class="font-sans text-[11px] uppercase tracking-[0.2em] text-graphite border-b border-graphite pb-1 hover:text-bronze hover:border-bronze transition-colors duration-300 cursor-pointer">Получить расчёт на WhatsApp →</button>
+        </form>
+      </div>
+
+    </div><!-- /quizContainer -->
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="border-t border-line py-16 px-8 md:px-16">
+  <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+    <a href="#" class="font-serif text-2xl font-light text-graphite">Lumière</a>
+    <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 font-sans text-xs tracking-[0.15em] text-muted">
+      <a href="tel:+77001234567" class="hover:text-graphite transition-colors duration-300">+7 700 123 45 67</a>
+      <a href="#" class="hover:text-graphite transition-colors duration-300">WhatsApp</a>
+      <a href="#" class="hover:text-graphite transition-colors duration-300">Instagram</a>
+    </div>
+    <p class="font-sans text-[10px] tracking-[0.15em] text-muted/50 uppercase">© 2026 Lumière Design</p>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-graphite text-white font-sans text-xs tracking-[0.15em] uppercase px-10 py-4 opacity-0 pointer-events-none translate-y-4 z-50"></div>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+// Header scroll effect
+const header = document.getElementById('header');
+const headerInner = document.getElementById('headerInner');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    header.classList.add('bg-[#FAFAFA]/90', 'backdrop-blur-md', 'shadow-sm');
+    headerInner.classList.remove('py-8');
+    headerInner.classList.add('py-5');
+  } else {
+    header.classList.remove('bg-[#FAFAFA]/90', 'backdrop-blur-md', 'shadow-sm');
+    headerInner.classList.remove('py-5');
+    headerInner.classList.add('py-8');
+  }
+});
+
+// Mobile menu
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+const closeMenu = document.getElementById('closeMenu');
+burger.addEventListener('click', () => { mobileMenu.classList.remove('hidden'); mobileMenu.classList.add('flex'); });
+closeMenu.addEventListener('click', () => { mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex'); });
+document.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', () => { mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex'); }));
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .line-reveal').forEach(el => observer.observe(el));
+
+// Counter animation
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = +el.dataset.target, suffix = el.dataset.suffix || '';
+    let current = 0;
+    const step = Math.max(1, Math.ceil(target / 50));
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { el.textContent = target + suffix; clearInterval(timer); }
+      else el.textContent = current;
+    }, 30);
+    counterObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+// ═══════════ QUIZ CALCULATOR ═══════════
+const quizData = { type: '', area: '100', style: '', phone: '' };
+
+// Area slider — live update
+const areaSlider = document.getElementById('areaSlider');
+const areaDisplay = document.getElementById('areaDisplay');
+areaSlider.addEventListener('input', () => {
+  quizData.area = areaSlider.value;
+  areaDisplay.innerHTML = areaSlider.value + ' <span class="text-3xl md:text-4xl text-muted">м²</span>';
+});
+
+// Step 1: select object type → auto-advance
+function quizSelectType(btn) {
+  quizData.type = btn.dataset.type;
+  btn.parentElement.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(() => quizGoTo(2), 350);
+}
+
+// Step 3: select style → show loader → advance to step 4
+function quizSelectStyle(btn, style) {
+  quizData.style = style;
+  btn.parentElement.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+  btn.classList.add('selected');
+  // Show loading screen
+  setTimeout(() => {
+    showStep('loading');
+    document.getElementById('quizProgress').textContent = '··· / 04';
+    // After 2s → final step
+    setTimeout(() => {
+      updateStep4Text();
+      showStep('4');
+      document.getElementById('quizProgress').textContent = '04 / 04';
+    }, 2000);
+  }, 300);
+}
+
+// Navigate to numbered step
+function quizGoTo(num) {
+  showStep(String(num));
+  if (num <= 4) document.getElementById('quizProgress').textContent = String(num).padStart(2, '0') + ' / 04';
+}
+
+// Show/hide steps
+function showStep(stepId) {
+  document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.quiz-step[data-step="${stepId}"]`).classList.add('active');
+}
+
+// Dynamic subtitle for Step 4 based on Astana working hours
+function updateStep4Text() {
+  const sub = document.getElementById('step4Subtitle');
+  // Get current day and hour in Asia/Almaty (Astana)
+  const now = new Date();
+  const dayStr = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Almaty', weekday: 'short' }).format(now);
+  const hourStr = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Almaty', hour: 'numeric', hour12: false }).format(now);
+  const hour = parseInt(hourStr, 10);
+  const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  const isWorkday = weekdays.includes(dayStr);
+  const isWorkHour = hour >= 10 && hour < 19;
+
+  if (isWorkday && isWorkHour) {
+    sub.textContent = 'Ваши параметры успешно обработаны. Оставьте номер WhatsApp, и наш архитектор отправит вам готовый расчёт и PDF-презентацию в течение 15 минут.';
+  } else {
+    sub.textContent = 'Ваши параметры успешно обработаны. Сейчас мы не в офисе, поэтому оставьте ваш номер WhatsApp, и наш архитектор пришлёт вам детальный расчёт утром в ближайший рабочий день.';
+  }
+}
+
+// Step 4: form submit → send to Telegram
+document.getElementById('quizForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  quizData.phone = document.getElementById('quizPhone').value.trim();
+  if (!quizData.phone) return;
+
+  const btn = document.getElementById('quizSubmitBtn');
+  const orig = btn.textContent;
+  btn.textContent = 'Отправка...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: quizData.type,
+        phone: quizData.phone,
+        area: quizData.area,
+        style: quizData.style
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      showToast('Расчёт отправлен. Ожидайте сообщение в WhatsApp.');
+      e.target.reset();
+    } else {
+      showToast(data.error || 'Ошибка. Попробуйте позже.');
+    }
+  } catch {
+    showToast('Ошибка сети. Попробуйте позже.');
+  }
+  btn.textContent = orig;
+  btn.disabled = false;
+});
+
+// Toast notification
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('opacity-0','pointer-events-none','translate-y-4');
+  t.classList.add('opacity-100','translate-y-0');
+  setTimeout(() => { t.classList.add('opacity-0','pointer-events-none','translate-y-4'); t.classList.remove('opacity-100','translate-y-0'); }, 4000);
+}
+</script>
+</body>
+</html>
